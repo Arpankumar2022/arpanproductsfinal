@@ -1,0 +1,61 @@
+server: 
+  port : 9092
+  error : 
+    include-message: always
+  servlet:
+    contextPath: /arpanproducts
+
+msg91:
+  authkey: arpanbags-authkey
+  sender: arpanbags-sender
+  otp_template_id: arpanbags-template-id
+  flow_id: arpanbags-flow-id
+
+#eureka:
+ # client:
+#    serviceUrl:
+  #    defaultZone: http://localhost:9094/eureka/
+
+cors:
+  allowed-origins: "*"
+  allowed-methods: "*"
+  allowed-headers: "*"
+  exposed-headers: "*"
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/arpanbagsproduct
+   # url: jdbc:mysql://103.150.136.164:3306/arpanproductsDB
+   # username: app_user
+    #password: Arpan@2025
+    username: root
+    password: root
+    driverClassName: com.mysql.cj.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100MB
+      max-request-size: 200MB
+  logging:
+    level:
+      org.springframework.security: TRACE
+
+
+
+  application:
+    name: "ARPAN-BAGS-PRODUCTS"
+
+#arpanbagsprivatejaihanuman
+#https://emn178.github.io/online-tools/sha256.html
+jwt:
+  jwtSecretKey : 33d5581a2d443825d32f8d634eeed46d3c21bb6927f61bfe83d1096f381ef7f6
+  jwtExpiryTimeout-milliseconds : 2500001
+  secret: p3xkz9s1FZCkNq8XjVtwMHyJQvRe/EYB7H4qL5dmV8Q=
+  expirationMs: 86400000 #24 hours, we can change it according to our need
+
+

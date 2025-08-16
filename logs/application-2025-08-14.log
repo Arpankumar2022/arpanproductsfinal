@@ -1,0 +1,65 @@
+2025-08-14 10:44:00 INFO  [main] c.a.p.a.ArpanbagsProductsApplication - Starting ArpanbagsProductsApplication using Java 17.0.9 with PID 10536 (D:\My_Dream_Project\ArpanBags-Products\arpanbags-products\target\classes started by arpan in D:\My_Dream_Project\ArpanBags-Products\arpanbags-products)
+2025-08-14 10:44:00 INFO  [main] c.a.p.a.ArpanbagsProductsApplication - No active profile set, falling back to 1 default profile: "default"
+2025-08-14 10:44:01 INFO  [main] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-08-14 10:44:01 INFO  [main] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 120 ms. Found 9 JPA repository interfaces.
+2025-08-14 10:44:02 INFO  [main] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 9092 (http)
+2025-08-14 10:44:02 INFO  [main] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-9092"]
+2025-08-14 10:44:02 INFO  [main] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-08-14 10:44:02 INFO  [main] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2025-08-14 10:44:02 INFO  [main] o.a.c.c.C.[.[.[/arpanproducts] - Initializing Spring embedded WebApplicationContext
+2025-08-14 10:44:02 INFO  [main] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1709 ms
+2025-08-14 10:44:02 INFO  [main] o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-08-14 10:44:02 INFO  [main] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
+2025-08-14 10:44:02 INFO  [main] o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-08-14 10:44:02 INFO  [main] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-08-14 10:44:02 INFO  [main] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-08-14 10:44:04 INFO  [main] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@123ca460
+2025-08-14 10:44:04 INFO  [main] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-08-14 10:44:04 WARN  [main] org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-08-14 10:44:04 WARN  [main] org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-08-14 10:44:05 INFO  [main] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-08-14 10:44:08 INFO  [main] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-08-14 10:44:08 INFO  [main] c.a.p.a.filter.JwtAuthFilter - JwtAuthFilter initialized
+2025-08-14 10:44:08 INFO  [main] c.a.p.a.config.SecurityConfig - JwtAuthFilter bean created
+2025-08-14 10:44:08 INFO  [main] c.a.p.a.controller.ImageController - Folder directory is created true 
+2025-08-14 10:44:08 WARN  [main] o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-08-14 10:44:09 INFO  [main] c.a.p.a.config.SecurityConfig - Configuring SecurityFilterChain
+2025-08-14 10:44:09 INFO  [main] o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@d3929ba, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@6101fd7d, org.springframework.security.web.context.SecurityContextHolderFilter@60fc4450, org.springframework.security.web.header.HeaderWriterFilter@12544a50, org.springframework.web.filter.CorsFilter@b22bebc, org.springframework.security.web.authentication.logout.LogoutFilter@1b72f9a, com.arpanbags.products.arpanbagsproducts.filter.JwtAuthFilter@267309f7, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@270a3cef, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6d224921, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@60773809, org.springframework.security.web.session.SessionManagementFilter@7893b8c, org.springframework.security.web.access.ExceptionTranslationFilter@708f238f, org.springframework.security.web.access.intercept.AuthorizationFilter@301b89e1]
+2025-08-14 10:44:09 INFO  [main] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-9092"]
+2025-08-14 10:44:09 INFO  [main] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 9092 (http) with context path '/arpanproducts'
+2025-08-14 10:44:09 INFO  [main] c.a.p.a.ArpanbagsProductsApplication - Started ArpanbagsProductsApplication in 9.46 seconds (process running for 9.937)
+2025-08-14 10:47:04 INFO  [SpringApplicationShutdownHook] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-08-14 10:47:04 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-08-14 10:47:05 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-08-14 10:47:28 INFO  [main] c.a.p.a.ArpanbagsProductsApplication - Starting ArpanbagsProductsApplication using Java 17.0.9 with PID 17396 (D:\My_Dream_Project\ArpanBags-Products\arpanbags-products\target\classes started by arpan in D:\My_Dream_Project\ArpanBags-Products\arpanbags-products)
+2025-08-14 10:47:28 INFO  [main] c.a.p.a.ArpanbagsProductsApplication - No active profile set, falling back to 1 default profile: "default"
+2025-08-14 10:47:29 INFO  [main] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-08-14 10:47:30 INFO  [main] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 113 ms. Found 9 JPA repository interfaces.
+2025-08-14 10:47:30 INFO  [main] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 9092 (http)
+2025-08-14 10:47:31 INFO  [main] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-9092"]
+2025-08-14 10:47:31 INFO  [main] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-08-14 10:47:31 INFO  [main] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2025-08-14 10:47:31 INFO  [main] o.a.c.c.C.[.[.[/arpanproducts] - Initializing Spring embedded WebApplicationContext
+2025-08-14 10:47:31 INFO  [main] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2135 ms
+2025-08-14 10:47:31 INFO  [main] o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-08-14 10:47:31 INFO  [main] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
+2025-08-14 10:47:31 INFO  [main] o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-08-14 10:47:31 INFO  [main] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-08-14 10:47:31 INFO  [main] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-08-14 10:47:33 INFO  [main] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@100807ca
+2025-08-14 10:47:33 INFO  [main] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-08-14 10:47:33 WARN  [main] org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-08-14 10:47:33 WARN  [main] org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-08-14 10:47:35 INFO  [main] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-08-14 10:47:37 INFO  [main] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-08-14 10:47:37 INFO  [main] c.a.p.a.filter.JwtAuthFilter - JwtAuthFilter initialized
+2025-08-14 10:47:37 INFO  [main] c.a.p.a.config.SecurityConfig - JwtAuthFilter bean created
+2025-08-14 10:47:38 WARN  [main] o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-08-14 10:47:38 INFO  [main] c.a.p.a.config.SecurityConfig - Configuring SecurityFilterChain
+2025-08-14 10:47:38 INFO  [main] o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@cec1ce2, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@4d82ded2, org.springframework.security.web.context.SecurityContextHolderFilter@3bd1c7f0, org.springframework.security.web.header.HeaderWriterFilter@feb57b4, org.springframework.web.filter.CorsFilter@655875bb, org.springframework.security.web.authentication.logout.LogoutFilter@64f1e9f8, com.arpanbags.products.arpanbagsproducts.filter.JwtAuthFilter@1067bc4c, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@17e2ad13, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6a94bd69, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@6ad036d6, org.springframework.security.web.session.SessionManagementFilter@7d661205, org.springframework.security.web.access.ExceptionTranslationFilter@77a6aa9f, org.springframework.security.web.access.intercept.AuthorizationFilter@a8964c1]
+2025-08-14 10:47:38 INFO  [main] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-9092"]
+2025-08-14 10:47:38 INFO  [main] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 9092 (http) with context path '/arpanproducts'
+2025-08-14 10:47:38 INFO  [main] c.a.p.a.ArpanbagsProductsApplication - Started ArpanbagsProductsApplication in 10.888 seconds (process running for 11.394)
+2025-08-14 10:55:55 INFO  [SpringApplicationShutdownHook] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-08-14 10:55:55 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-08-14 10:55:56 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.

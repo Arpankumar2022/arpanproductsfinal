@@ -1,0 +1,10 @@
+[
+  {
+    "message": "Registration successful. OTP sent to the mobile number.",
+    "status": "SUCCESS"
+  },
+  {
+    "message": "Mobile number already registered.",
+    "status": "ERROR"
+  }
+]

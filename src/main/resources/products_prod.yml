@@ -1,0 +1,20 @@
+spring:
+  config:
+    activate:
+      on-profile: "prod"
+
+application:
+  name: ARPAN-BAGS-PRODUCTS
+
+products:
+  message: "Welcome to Products Section related to prod APIs"
+
+
+
+#arpanbagsprivatejaihanuman
+#https://emn178.github.io/online-tools/sha256.html
+jwt:
+  jwtSecretKey : 33d5581a2d443825d32f8d634eeed46d3c21bb6927f61bfe83d1096f381ef7f6
+  jwtExpiryTimeout-milliseconds : 2500001
+
+

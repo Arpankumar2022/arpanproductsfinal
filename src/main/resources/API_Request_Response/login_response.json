@@ -1,0 +1,19 @@
+[
+  {
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "user": {
+      "email": "john.doe@example.com",
+      "mobileNumber": "9876543210",
+      "companyName": "Doe Enterprises",
+      "address": "123 Main Street, Springfield",
+      "roles": [
+        "USER"
+      ]
+    },
+    "status": "SUCCESS"
+  },
+  {
+    "message": "Invalid credentials.",
+    "status": "ERROR"
+  }
+]
