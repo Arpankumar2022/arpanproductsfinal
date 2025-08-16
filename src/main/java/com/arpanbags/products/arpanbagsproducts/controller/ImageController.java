@@ -73,7 +73,7 @@ public class ImageController {
 
 
     // Helper to get server base URL
-    private String getBaseUrl(HttpServletRequest request) {
+    public static String getBaseUrl(HttpServletRequest request) {
         return request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
     }
 

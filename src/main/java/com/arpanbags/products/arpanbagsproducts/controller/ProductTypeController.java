@@ -1,7 +1,9 @@
 package com.arpanbags.products.arpanbagsproducts.controller;
 
+import com.arpanbags.products.arpanbagsproducts.dto.GroupedImageMetadataDTO;
 import com.arpanbags.products.arpanbagsproducts.dto.ProductsTypeDTO;
 import com.arpanbags.products.arpanbagsproducts.service.ProductTypeService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -19,9 +21,9 @@ public class ProductTypeController {
     private final ProductTypeService productTypeService;
 
     @GetMapping
-    public ResponseEntity<List<ProductsTypeDTO>> getAllProducts() {
+    public ResponseEntity<List<ProductsTypeDTO>> getAllProducts(HttpServletRequest request) {
         log.info("This is getAllProducts coming from ProductTypeController");
-        List<ProductsTypeDTO> products = productTypeService.getAllProductTypes();
+        List<ProductsTypeDTO> products = productTypeService.getAllProductTypes(request);
         return ResponseEntity.ok(products);
     }
 
@@ -31,15 +33,17 @@ public class ProductTypeController {
         ProductsTypeDTO product = productTypeService.getProductTypeById(id);
         return ResponseEntity.ok(product);
     }
+
     @PostMapping
-    public ResponseEntity<ProductsTypeDTO> createProduct(@ModelAttribute ProductsTypeDTO productTypeDTO) {
+    public ResponseEntity<ProductsTypeDTO> createProduct(@ModelAttribute ProductsTypeDTO productTypeDTO, HttpServletRequest request) {
         log.info("create product in ProductTypeController ");
-        ProductsTypeDTO createdProduct = productTypeService.createProductType(productTypeDTO);
+        ProductsTypeDTO createdProduct = productTypeService.createProductType(productTypeDTO, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct);
     }
+
     @PutMapping
-    public ResponseEntity<ProductsTypeDTO> updateProduct( @RequestBody ProductsTypeDTO productsTypeDTO) {
-        log.info("This is updateProduct in ProdcvutTypeContoller ");
+    public ResponseEntity<ProductsTypeDTO> updateProduct(@RequestBody ProductsTypeDTO productsTypeDTO) {
+        log.info("This is updateProduct in ProductTypeContoller ");
         ProductsTypeDTO updatedProductsTypeDTO = productTypeService.updateProductType(productsTypeDTO);
         return ResponseEntity.ok(updatedProductsTypeDTO);
     }
@@ -51,11 +55,12 @@ public class ProductTypeController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/getProductByProductName/{productName}")
-    public ResponseEntity<ProductsTypeDTO> getProductByProductName(@PathVariable String productName) {
-        log.info("Get Products By Product Name in ProductTypeController");
-        ProductsTypeDTO product = productTypeService.getProductTypeByProductName(productName);
-        return ResponseEntity.ok(product);
+    @GetMapping("/getImagesBySubCategoryID/{subCategoryID}")
+    public ResponseEntity<List<GroupedImageMetadataDTO>> getProductByProductName(@PathVariable int subCategoryID,
+                                                                                 HttpServletRequest request) {
+        log.info("Get Products and Images By SubCategoryID in ProductTypeController");
+        List<GroupedImageMetadataDTO> groupedImageMetadataDTOS = productTypeService.getImagesBySubCategoryID(subCategoryID, request);
+        return ResponseEntity.ok(groupedImageMetadataDTOS);
     }
 
 }

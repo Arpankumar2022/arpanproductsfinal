@@ -1,10 +1,14 @@
 package com.arpanbags.products.arpanbagsproducts.controller;
 
+import com.arpanbags.products.arpanbagsproducts.dto.GroupedImageMetadataDTO;
 import com.arpanbags.products.arpanbagsproducts.dto.SubCategoryDTO;
 import com.arpanbags.products.arpanbagsproducts.entity.categories.SubCategory;
 import com.arpanbags.products.arpanbagsproducts.service.SubCategoryService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,6 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/subcategories")
 @RequiredArgsConstructor
+@Slf4j
 public class SubCategoryController {
 
 
@@ -23,8 +28,11 @@ public class SubCategoryController {
     }
 
     @GetMapping("/{id}")
-    public SubCategoryDTO get(@PathVariable Long id) {
-        return subCategoryService.getSubCategory(id);
+    public ResponseEntity<List<GroupedImageMetadataDTO>> getProductsBySubCategoryID(@PathVariable int id,
+                                                                                    HttpServletRequest request) {
+        log.info("Get Products By subCategoryID in SubCategoryController");
+        List<GroupedImageMetadataDTO> groupedImageMetadataDTOS = subCategoryService.getImagesBySubCategoryID(id, request);
+        return ResponseEntity.ok(groupedImageMetadataDTOS);
     }
 
     @PostMapping("/{categoryId}")
