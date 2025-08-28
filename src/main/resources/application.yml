@@ -5,6 +5,8 @@ server:
   servlet:
     contextPath: /arpanproducts
 
+send-otp: false
+
 msg91:
   authkey: arpanbags-authkey
   sender: arpanbags-sender
@@ -27,6 +29,9 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/arpanproductsDB
     username: app_user
     password: Arpan@2025
+    #url: jdbc:mysql://127.0.0.1:3306/arpanbagsproduct
+    #username: root
+    #password: root
     driverClassName: com.mysql.cj.jdbc.Driver
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect

@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class SubCategoryService {
 
-
+    private static final String IMAGE_UPLOAD_DIR = "/opt/arpanbags/uploads/images/";
     private final SubcategoryRepository subCategoryRepository;
 
 
@@ -72,8 +72,8 @@ public class SubCategoryService {
         String baseUrl = ImageController.getBaseUrl(request);
         String categoryIdStr = String.valueOf(subCategoryID);
         //PROD_ENV--->
-        //   File categoryFolder = new File(IMAGE_UPLOAD_DIR, categoryIdStr);
-        File categoryFolder = new File("C:\\Users\\arpan\\uploads\\", categoryIdStr);
+         File categoryFolder = new File(IMAGE_UPLOAD_DIR, categoryIdStr);
+       // File categoryFolder = new File("C:\\Users\\arpan\\uploads\\", categoryIdStr);
 
         if (!categoryFolder.exists() || !categoryFolder.isDirectory()) {
             return Collections.emptyList();

@@ -22,14 +22,14 @@ public class Orders {
 
     private LocalDateTime orderDate;
 
-    @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL,  orphanRemoval = true)
+    @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL,  orphanRemoval = true, fetch = FetchType.EAGER)
     private List<OrderItem> items=new ArrayList<>();;
 
     private String orderNumber;
 
     private Long userId;
 
-    private OrderStatus orderStatus;
+    private String orderStatus;
 
     public void addOrderItem(OrderItem item) {
         items.add(item);

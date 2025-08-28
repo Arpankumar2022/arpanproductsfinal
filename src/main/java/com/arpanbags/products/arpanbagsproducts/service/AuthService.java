@@ -6,12 +6,14 @@ import com.arpanbags.products.arpanbagsproducts.entity.User;
 import com.arpanbags.products.arpanbagsproducts.entity.UserOtp;
 import com.arpanbags.products.arpanbagsproducts.repository.UserOtpRepository;
 import com.arpanbags.products.arpanbagsproducts.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 import static java.util.stream.Collectors.toList;
 
@@ -26,6 +28,9 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
 
+    @Value("send-otp")
+    private String sendOTP;
+
     public AuthService(UserRepository userRepository, UserOtpRepository userOtpRepository, Msg91OtpService msg91OtpService, PasswordEncoder passwordEncoder, JwtService jwtService) {
         this.userRepository = userRepository;
         this.userOtpRepository = userOtpRepository;
@@ -35,9 +40,9 @@ public class AuthService {
     }
 
 
-    public void register(RegisterRequest request) {
+    public RegisterResponse register(RegisterRequest request) {
         if (userRepository.findByMobileNumber(request.getMobileNumber()).isPresent()) {
-            throw new RuntimeException("Mobile number already registered");
+            return new RegisterResponse(false, "Mobile number already registered");
         }
 
         User user = new User();
@@ -51,19 +56,32 @@ public class AuthService {
 
         userRepository.save(user);
 
-        sendOtp(request.getMobileNumber());
+        if (Objects.equals(sendOTP, true)) {
+            sendOtp(request.getMobileNumber());
+        }
+        return new RegisterResponse(true, "Registered successfully. OTP sent for verification.");
     }
 
     public LoginResponse login(LoginRequest request) {
+
+        LoginResponse loginResponse = new LoginResponse();
+
         User user = userRepository.findByMobileNumber(request.getMobileNumber())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElse(null);
+
+        if (user == null) {
+            loginResponse.setError("No User Found with this Mobile Number");
+            return loginResponse;
+        }
 
         if (user.getStatus() != User.Status.ACTIVE) {
-            throw new RuntimeException("User is not active");
+            loginResponse.setError("User is not active.");
+            return loginResponse;
         }
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid credentials");
+            loginResponse.setError("Invalid credentials.");
+            return loginResponse;
         }
 
         List<String> roles = user.getRoles().stream()

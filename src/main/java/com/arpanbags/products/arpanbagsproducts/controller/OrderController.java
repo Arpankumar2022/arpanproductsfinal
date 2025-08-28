@@ -47,7 +47,7 @@ public class OrderController {
             orderToUpdate.setOrderNumber(orderDetails.getOrderNumber());
             orderToUpdate.setUserId(10L);
             // Update other fields as needed
-            orderToUpdate.setOrderStatus(OrderStatus.SHIPPED);
+            orderToUpdate.setOrderStatus(OrderStatus.SHIPPED.getDescription());
             Orders updatedOrder = orderService.updateOrder(orderToUpdate);
             return new ResponseEntity<>(updatedOrder, HttpStatus.OK);
         } else {

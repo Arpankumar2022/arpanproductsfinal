@@ -32,8 +32,8 @@ public class OrderService {
     public OrderDTO createOrder(OrderDTO orderDto) {
         Orders order = new Orders();
         order.setOrderDate(orderDto.getOrderDate());
-        order.setOrderStatus(OrderStatus.BOOKED);
-        order.setUserId(10L);
+        order.setOrderStatus(OrderStatus.BOOKED.getDescription());
+        order.setUserId(orderDto.getUserId());
         order.setOrderNumber("ORDER_ID_" + UUID.randomUUID().toString().substring(0, 8).toUpperCase());
 
         for (OrderItemDTO itemDTO : orderDto.getItemDTOs()) {

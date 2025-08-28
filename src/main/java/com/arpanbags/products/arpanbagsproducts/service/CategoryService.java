@@ -3,6 +3,7 @@ package com.arpanbags.products.arpanbagsproducts.service;
 import com.arpanbags.products.arpanbagsproducts.dto.CategoryDTO;
 import com.arpanbags.products.arpanbagsproducts.dto.SubCategoryDTO;
 import com.arpanbags.products.arpanbagsproducts.entity.categories.Category;
+import com.arpanbags.products.arpanbagsproducts.entity.categories.SubCategory;
 import com.arpanbags.products.arpanbagsproducts.mapper.CategoryMapper;
 import com.arpanbags.products.arpanbagsproducts.repository.CategoryRepository;
 import com.arpanbags.products.arpanbagsproducts.repository.SubcategoryRepository;
@@ -22,27 +23,33 @@ public class CategoryService {
 
 
     public List<CategoryDTO> getAllCategories() {
-        List<Category>  list= categoryRepository.findAll();
-        return categoryRepository.findAll()
+        List<CategoryDTO> categoryDTOs = categoryRepository.findAll()
                 .stream()
                 .map(category -> {
                     CategoryDTO dto = new CategoryDTO();
                     dto.setId(category.getId());
                     dto.setName(category.getName());
 
-                  /*  List<SubCategoryDTO> subDTOs = subcategoryRepository.findByCategoryId(category.getId())
-                            .stream()
+                    // Fetch subcategories for this specific category
+                    List<SubCategory> subCategories = subcategoryRepository.findByCategoryId(category.getId());
+
+                    // Convert to DTOs
+                    List<SubCategoryDTO> subDTOs = subCategories.stream()
                             .map(sub -> {
                                 SubCategoryDTO subDTO = new SubCategoryDTO();
                                 subDTO.setId(sub.getId());
                                 subDTO.setName(sub.getName());
                                 return subDTO;
-                            })*/
+                            })
+                            .collect(Collectors.toList());
+
+                    dto.setSubCategories(subDTOs);
                     return dto;
-                }).collect(Collectors.toList());
+                })
+                .collect(Collectors.toList());
 
+        return categoryDTOs;
 
-                //.collect(Collectors.toList());
     }
 
     public CategoryDTO getCategoryById(Long id) {
