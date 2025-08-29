@@ -25,4 +25,6 @@ public class OrderDTO {
     private String orderNumber;
 
     private Long userId;
+
+    private String orderStatus;
 }

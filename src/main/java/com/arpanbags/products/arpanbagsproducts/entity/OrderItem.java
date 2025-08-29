@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -15,11 +18,9 @@ public class OrderItem {
     private Long id;
     private int quantity;
 
-    @ManyToOne
-    @JoinColumn(name = "order_id")
-    private Orders orders;
-
-    @ManyToOne
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "product_id")
-    private ProductsType productType;
+    private ProductsType product;
+
+
 }

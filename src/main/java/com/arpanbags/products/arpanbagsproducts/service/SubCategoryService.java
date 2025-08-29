@@ -44,8 +44,6 @@ public class SubCategoryService {
             SubCategory subCategory = new SubCategory();
             subCategory.setCategoryId(categoryId);
             subCategory.setName(subCategoryDTO.getName());
-            //subCategory.setProductsTypes();
-           // subCategory.set
             return SubCategoryMapper.INSTANCE.mapSubCategoryToSubCategoryDTO(subCategoryRepository.save(subCategory));
 
           //  return SubCategoryMapper.INSTANCE.mapSubCategoryToSubCategoryDTO(subCategoryRepository.save(SubCategoryMapper.INSTANCE.mapSubCategoryDTOToSubCategory(subCategoryDTO)));
@@ -72,7 +70,7 @@ public class SubCategoryService {
         String baseUrl = ImageController.getBaseUrl(request);
         String categoryIdStr = String.valueOf(subCategoryID);
         //PROD_ENV--->
-         File categoryFolder = new File(IMAGE_UPLOAD_DIR, categoryIdStr);
+        File categoryFolder = new File(IMAGE_UPLOAD_DIR, categoryIdStr);
        // File categoryFolder = new File("C:\\Users\\arpan\\uploads\\", categoryIdStr);
 
         if (!categoryFolder.exists() || !categoryFolder.isDirectory()) {

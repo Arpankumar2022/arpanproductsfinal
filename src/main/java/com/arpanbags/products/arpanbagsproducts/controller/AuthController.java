@@ -3,6 +3,7 @@ package com.arpanbags.products.arpanbagsproducts.controller;
 import com.arpanbags.products.arpanbagsproducts.dto.*;
 import com.arpanbags.products.arpanbagsproducts.service.AuthService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,8 @@ public class AuthController {
 
         if (response.isSuccess()) {
             return ResponseEntity.ok(response);
+        } else if (response.getMessage().equals("Mobile number already registered")) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
         } else {
             return ResponseEntity.badRequest().body(response);
         }
@@ -48,7 +51,7 @@ public class AuthController {
     }
 
     @GetMapping("/ping")
-    public String ping(){
+    public String ping() {
         return "pong";
     }
 

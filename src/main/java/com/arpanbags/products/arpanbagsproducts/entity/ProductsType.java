@@ -32,7 +32,7 @@ public class ProductsType extends BaseEntity {
     @JoinColumn(name = "sub_category_id", nullable = false)
     private SubCategory subCategory;
 */
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> imagePaths;
 
     @Column(name = "subcategory_id")

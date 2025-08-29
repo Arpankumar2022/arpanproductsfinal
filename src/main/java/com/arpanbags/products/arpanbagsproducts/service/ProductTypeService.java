@@ -160,7 +160,7 @@ public class ProductTypeService {
                         String fileName = subCategoryID + "_" + safeProductType + "_" + safeProductName + "_" + shortId + fileExtension;
 
                         // LOCAL_DEV ---> "C:\\Users\\arpan\\uploads\\"
-                        // Path folderPath = Path.of("C:\\Users\\arpan\\uploads\\", String.valueOf(subCategoryID), safeProductName);
+                       // Path folderPath = Path.of("C:\\Users\\arpan\\uploads\\", String.valueOf(subCategoryID), safeProductName);
 
                         //PROD_ENV--->
                         Path folderPath = Path.of(IMAGE_UPLOAD_DIR, String.valueOf(subCategoryID), safeProductName);

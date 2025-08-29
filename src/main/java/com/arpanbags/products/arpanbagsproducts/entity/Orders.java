@@ -22,8 +22,9 @@ public class Orders {
 
     private LocalDateTime orderDate;
 
-    @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL,  orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<OrderItem> items=new ArrayList<>();;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "order_id") // this creates the FK in OrderItem table
+    private List<OrderItem> items = new ArrayList<>();
 
     private String orderNumber;
 
@@ -33,7 +34,7 @@ public class Orders {
 
     public void addOrderItem(OrderItem item) {
         items.add(item);
-        item.setOrders(this); // very important!
+        //item.setOrders(this); // very important!
     }
 
 }
