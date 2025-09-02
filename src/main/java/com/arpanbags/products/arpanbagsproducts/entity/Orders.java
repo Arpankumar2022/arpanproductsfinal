@@ -34,7 +34,6 @@ public class Orders {
 
     public void addOrderItem(OrderItem item) {
         items.add(item);
-        //item.setOrders(this); // very important!
     }
 
 }

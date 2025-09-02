@@ -1,9 +1,13 @@
 package com.arpanbags.products.arpanbagsproducts.dto;
 
-public class CartItemDTO {
-    private Long id;
+import com.arpanbags.products.arpanbagsproducts.entity.ProductsType;
+import lombok.Data;
 
-    private String productName; // e.g., "Leather Bag"
+
+@Data
+public class CartItemDTO {
+
+    private Long id;
     private int quantity;
-    private double price;
+    private ProductsTypeDTO product;
 }

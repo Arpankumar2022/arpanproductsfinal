@@ -37,6 +37,9 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/category/**").permitAll()
+                        .requestMatchers("/subcategories/**").permitAll()
+                        .requestMatchers("/products/getImagesBySubCategoryID/**").permitAll()
                         .requestMatchers("/images/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/user/**").hasRole("USER")

@@ -41,7 +41,7 @@ public class ProductTypeService {
     public List<ProductsTypeDTO> getAllProductTypes(HttpServletRequest request) {
         List<ProductsType> productsTypeList = productsTypeRepository.findAll();
 
-        productsTypeList.stream().map(product -> {
+        return productsTypeList.stream().map(product -> {
             ProductsTypeDTO dto = new ProductsTypeDTO();
             dto.setId(product.getId());
             dto.setProductType(product.getProductType());
@@ -49,25 +49,29 @@ public class ProductTypeService {
             dto.setProductLogo(product.getProductLogo());
             dto.setOffer(product.getOffer());
             dto.setProductPrice(product.getProductPrice());
-            List<String> imagePaths = getImagePath("C:\\Users\\arpan\\uploads\\", product.getProductName());
-            // dto.setImages(imagePaths);
-            //dto.setImages(product.getImagePaths()); // already stored as List<String>
-
+            dto.setFileUrls(productsTypeRepository.findImagePathsByProductTypeId(product.getId()));
             // Subcategory is an entity; get only its ID
             if (product.getSubcategoryId() != null) {
                 dto.setSubCategoryId(product.getSubcategoryId());
             }
-
             return dto;
         }).collect(Collectors.toList());
-        return new ArrayList<>();
     }
 
     public ProductsTypeDTO getProductTypeById(Long id) {
         Optional<ProductsType> optionalProductType = productsTypeRepository.findById(id);
         // return optionalProductType.orElseThrow(() -> new RuntimeException("ProductType not found with id: " + id));
         if (optionalProductType.isPresent()) {
-            return ProductsTypeMapper.INSTANCE.mapProductsTypeToProductsTypeDTO(optionalProductType.get());
+            ProductsType productsType = optionalProductType.get();
+            ProductsTypeDTO productsTypeDTO = new ProductsTypeDTO();
+            productsTypeDTO.setProductLogo(productsType.getProductLogo());
+            productsTypeDTO.setProductPrice(productsType.getProductPrice());
+            productsTypeDTO.setProductType(productsType.getProductType());
+            productsTypeDTO.setProductName(productsType.getProductName());
+            productsTypeDTO.setId(productsType.getId());
+            productsTypeDTO.setSubCategoryId(productsType.getSubcategoryId());
+            productsTypeDTO.setFileUrls(productsTypeRepository.findImagePathsByProductTypeId(productsType.getId()));
+            return productsTypeDTO;
         } else {
             throw new RuntimeException("ProductType not found with id: " + id);
         }
@@ -160,7 +164,7 @@ public class ProductTypeService {
                         String fileName = subCategoryID + "_" + safeProductType + "_" + safeProductName + "_" + shortId + fileExtension;
 
                         // LOCAL_DEV ---> "C:\\Users\\arpan\\uploads\\"
-                       // Path folderPath = Path.of("C:\\Users\\arpan\\uploads\\", String.valueOf(subCategoryID), safeProductName);
+                        // Path folderPath = Path.of("C:\\Users\\arpan\\uploads\\", String.valueOf(subCategoryID), safeProductName);
 
                         //PROD_ENV--->
                         Path folderPath = Path.of(IMAGE_UPLOAD_DIR, String.valueOf(subCategoryID), safeProductName);
@@ -173,8 +177,6 @@ public class ProductTypeService {
                         // File URL (keep subfolders in path)
                         String fileUrl = baseUrl + "/images/files/" + subCategoryID + "/" + safeProductName + "/" + fileName;
 
-                        // Save metadata
-                        // imageStore.save(new ImageMetadata(fileUrl, productType, productName, subCategoryID));
 
                         return fileUrl;
                     } catch (IOException e) {

@@ -18,7 +18,7 @@ public class CartItem extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String productName; // e.g., "Leather Bag"
+    private Long productID;
+    private Long userID;
     private int quantity;
-    private double price;
 }

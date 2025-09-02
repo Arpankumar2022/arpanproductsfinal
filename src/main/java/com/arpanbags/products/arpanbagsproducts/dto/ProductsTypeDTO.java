@@ -26,4 +26,6 @@ public class ProductsTypeDTO {
 
     private Long subCategoryId;
 
+    private List<String> fileUrls;
+
 }

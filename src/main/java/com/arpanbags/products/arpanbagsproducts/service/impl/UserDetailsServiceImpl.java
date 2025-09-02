@@ -23,14 +23,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String mobileNumber) throws UsernameNotFoundException {
         User user = userRepository.findByMobileNumber(mobileNumber)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + mobileNumber));
-
-        return new org.springframework.security.core.userdetails.User(
+        return new CustomUserDetails(
+                user.getId(),
                 user.getMobileNumber(),
                 user.getPassword(),
                 user.getStatus() == User.Status.ACTIVE,
-                true,
-                true,
-                true,
                 user.getRoles().stream()
                         .map(role -> new SimpleGrantedAuthority(role.getName()))
                         .collect(toList())
