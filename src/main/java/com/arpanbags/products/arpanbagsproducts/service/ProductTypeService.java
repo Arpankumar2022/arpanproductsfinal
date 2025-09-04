@@ -7,23 +7,18 @@ import com.arpanbags.products.arpanbagsproducts.dto.ProductsTypeDTO;
 import com.arpanbags.products.arpanbagsproducts.entity.ProductsType;
 import com.arpanbags.products.arpanbagsproducts.entity.categories.SubCategory;
 import com.arpanbags.products.arpanbagsproducts.mapper.ProductsTypeMapper;
-import com.arpanbags.products.arpanbagsproducts.mapper.RestaurantMapper;
 import com.arpanbags.products.arpanbagsproducts.repository.ProductsTypeRepository;
 import com.arpanbags.products.arpanbagsproducts.repository.SubcategoryRepository;
+import com.arpanbags.products.arpanbagsproducts.util.ProductTypeUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -36,26 +31,13 @@ public class ProductTypeService {
 
     private final SubcategoryRepository subcategoryRepository;
 
+    private final ProductTypeUtils productTypeUtils;
+
     private static final String IMAGE_UPLOAD_DIR = "/opt/arpanbags/uploads/images/";
 
     public List<ProductsTypeDTO> getAllProductTypes(HttpServletRequest request) {
         List<ProductsType> productsTypeList = productsTypeRepository.findAll();
-
-        return productsTypeList.stream().map(product -> {
-            ProductsTypeDTO dto = new ProductsTypeDTO();
-            dto.setId(product.getId());
-            dto.setProductType(product.getProductType());
-            dto.setProductName(product.getProductName());
-            dto.setProductLogo(product.getProductLogo());
-            dto.setOffer(product.getOffer());
-            dto.setProductPrice(product.getProductPrice());
-            dto.setFileUrls(productsTypeRepository.findImagePathsByProductTypeId(product.getId()));
-            // Subcategory is an entity; get only its ID
-            if (product.getSubcategoryId() != null) {
-                dto.setSubCategoryId(product.getSubcategoryId());
-            }
-            return dto;
-        }).collect(Collectors.toList());
+        return productsTypeList.stream().map(productTypeUtils::getProductTypeDTO).collect(Collectors.toList());
     }
 
     public ProductsTypeDTO getProductTypeById(Long id) {
@@ -245,52 +227,4 @@ public class ProductTypeService {
         String[] parts = fileName.split("_");
         return parts.length >= 3 ? parts[1] : null;
     }
-
-      /*public List<String> saveOrGetImages(List<MultipartFile> images, String productName, boolean isProductSave) {
-        List<String> imagePaths = new ArrayList<>();
-
-        for (MultipartFile image : images) {
-            if (!image.isEmpty()) {
-                try {
-                    String fileName = UUID.randomUUID() + "_" + productName + "_" + image.getOriginalFilename();
-                    Path filePath = Paths.get("C:\\Users\\arpan\\uploads\\" + fileName);
-                    if (isProductSave) {
-                        Files.copy(image.getInputStream(), filePath);
-                    }
-                    imagePaths.add(filePath.toString()); // or use relative path or URL
-                } catch (IOException e) {
-                    throw new RuntimeException("Failed to save image: " + image.getOriginalFilename(), e);
-                }
-            }
-        }
-        return imagePaths;
-    }*/
-
-    /*public List<String> uploadImages(MultipartFile[] files, HttpServletRequest request,
-                                     String productType, String productName, Long subCategoryID) {
-        String baseUrl = ImageController.getBaseUrl(request);
-
-        return Arrays.stream(files)
-                .map(file -> {
-                    try {
-                        // Clean productName and productType to avoid illegal filename characters
-                        String safeProductType = productType.replaceAll("[^a-zA-Z0-9]", "_");
-                        String safeProductName = productName.replaceAll("[^a-zA-Z0-9]", "_");
-
-                        String fileExtension = getFileExtension(file.getOriginalFilename());
-                        String fileName = subCategoryID.intValue() + "_" + safeProductType + "_" + safeProductName + "_" +
-                                UUID.randomUUID().toString().replace("-", "").substring(0, 6) + fileExtension;
-
-                        Path path = Path.of(IMAGE_UPLOAD_DIR, fileName);
-                        Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-
-                        return baseUrl + "/images/files/" + fileName;
-                    } catch (IOException e) {
-                        throw new RuntimeException("Failed to upload: " + file.getOriginalFilename(), e);
-                    }
-                })
-                .toList();
-    }*/
-
-
 }

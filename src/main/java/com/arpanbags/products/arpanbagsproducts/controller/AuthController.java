@@ -71,8 +71,12 @@ public class AuthController {
             LoginResponse loginValidationErrors = new LoginResponse(null, null, Collections.emptyList(), "Validation error(s): " + errorMessage);
             return ResponseEntity.badRequest().body(loginValidationErrors);
         }
-
-        return ResponseEntity.ok(authService.login(request));
+        LoginResponse loginResponse  = authService.login(request);
+        if(loginResponse.getError()!=null) {
+            return ResponseEntity.badRequest().body(loginResponse);
+        }else{
+            return ResponseEntity.ok().body(loginResponse);
+        }
     }
 
     @PostMapping("/send-otp")

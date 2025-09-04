@@ -12,5 +12,5 @@ import java.util.List;
 public class CategoryDTO {
     private Long id;
     private String name;
-    private List<SubCategoryDTO> subCategories;
+    private List<SubCategoryDTO> subCategoryDTOS;
 }
