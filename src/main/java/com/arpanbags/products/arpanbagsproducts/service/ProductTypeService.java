@@ -176,7 +176,6 @@ public class ProductTypeService {
     public List<GroupedImageMetadataDTO> getImagesBySubCategoryID(int subCategoryID, HttpServletRequest request
     ) {
 
-        String baseUrl = ImageController.getBaseUrl(request);
         String categoryIdStr = String.valueOf(subCategoryID);
         //PROD_ENV--->
         File categoryFolder = new File(IMAGE_UPLOAD_DIR, categoryIdStr);
@@ -206,7 +205,9 @@ public class ProductTypeService {
 
                 String groupKey = productName + "|" + productType;
 
-                String fileUrl = baseUrl + "/images/files/" + subCategoryID + "/" + productName + "/" + fileName;
+                String relativePath = subCategoryID + "/" + productName + "/" + fileName;
+                String fileUrl = ImageController.buildFileUrl(request, relativePath);
+
                 groupedFiles.computeIfAbsent(groupKey, k -> new ArrayList<>()).add(fileUrl);
             }
         }
