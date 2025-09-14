@@ -159,13 +159,12 @@ public class ProductTypeService {
                         Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
                         // File URL (keep subfolders in path)
-                        String fileUrl = baseUrl + "/images/files/" + subCategoryID + "/" + safeProductName + "/" + fileName;
-                        log.info("File URL ==> {} ", fileUrl);
-                        String buildFileName = subCategoryID + "/" + safeProductName + "/" + fileName;
-                        String buildFileUrl = ImageController.buildFileUrl(request, buildFileName);
-                        log.info("Build File Url ==> {} ", buildFileUrl);
 
-                        return buildFileUrl;
+                        String buildFileName = subCategoryID + "/" + safeProductName + "/" + fileName;
+                        String fileUrl = ImageController.buildFileUrl(request, buildFileName);
+                        log.info("File URL ==> {} ", fileUrl);
+
+                        return fileUrl;
                     } catch (IOException e) {
                         throw new RuntimeException("Failed to upload: " + file.getOriginalFilename(), e);
                     }
