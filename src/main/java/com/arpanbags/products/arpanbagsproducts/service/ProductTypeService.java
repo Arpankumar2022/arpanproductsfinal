@@ -12,6 +12,7 @@ import com.arpanbags.products.arpanbagsproducts.repository.SubcategoryRepository
 import com.arpanbags.products.arpanbagsproducts.util.ProductTypeUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ProductTypeService {
 
     private final ProductsTypeRepository productsTypeRepository;
@@ -158,9 +160,12 @@ public class ProductTypeService {
 
                         // File URL (keep subfolders in path)
                         String fileUrl = baseUrl + "/images/files/" + subCategoryID + "/" + safeProductName + "/" + fileName;
+                        log.info("File URL ==> {} ", fileUrl);
+                        String buildFileName = subCategoryID + "/" + safeProductName + "/" + fileName;
+                        String buildFileUrl = ImageController.buildFileUrl(request, buildFileName);
+                        log.info("Build File Url ==> {} ", buildFileUrl);
 
-
-                        return fileUrl;
+                        return buildFileUrl;
                     } catch (IOException e) {
                         throw new RuntimeException("Failed to upload: " + file.getOriginalFilename(), e);
                     }
