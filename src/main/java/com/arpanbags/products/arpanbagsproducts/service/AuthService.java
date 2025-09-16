@@ -4,6 +4,8 @@ import com.arpanbags.products.arpanbagsproducts.dto.*;
 import com.arpanbags.products.arpanbagsproducts.entity.Role;
 import com.arpanbags.products.arpanbagsproducts.entity.User;
 import com.arpanbags.products.arpanbagsproducts.entity.UserOtp;
+import com.arpanbags.products.arpanbagsproducts.enums.RoleUsers;
+import com.arpanbags.products.arpanbagsproducts.repository.RoleRepository;
 import com.arpanbags.products.arpanbagsproducts.repository.UserOtpRepository;
 import com.arpanbags.products.arpanbagsproducts.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,8 +14,8 @@ import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -27,16 +29,18 @@ public class AuthService {
     private final Msg91OtpService msg91OtpService;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final RoleRepository roleRepository;
 
     @Value("send-otp")
     private String sendOTP;
 
-    public AuthService(UserRepository userRepository, UserOtpRepository userOtpRepository, Msg91OtpService msg91OtpService, PasswordEncoder passwordEncoder, JwtService jwtService) {
+    public AuthService(UserRepository userRepository, UserOtpRepository userOtpRepository, Msg91OtpService msg91OtpService, PasswordEncoder passwordEncoder, JwtService jwtService,RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.userOtpRepository = userOtpRepository;
         this.msg91OtpService = msg91OtpService;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
+        this.roleRepository = roleRepository;
     }
 
 
@@ -53,7 +57,18 @@ public class AuthService {
         user.setAddress(request.getAddress());
         user.setStatus(User.Status.INACTIVE);
         user.setCreatedAt(LocalDateTime.now());
-
+        Set<Role> roles = new HashSet<>();
+        Role newRole = new Role(RoleUsers.ROLE_USER.getRoleName());
+        roles.add(newRole);
+        for (String roleName : roles.stream().map(Role::getName).collect(Collectors.toSet())) {
+            Optional<Role> existingRole = roleRepository.findByName(roleName);
+            if (existingRole.isPresent()) {
+                roles.add(existingRole.get());
+              //  roleRepository.save(newRole);
+                roles.add(newRole);
+            }
+        }
+        user.setRoles(roles);
         userRepository.save(user);
 
         if (Objects.equals(sendOTP, true)) {
@@ -61,6 +76,7 @@ public class AuthService {
         }
         return new RegisterResponse(true, "Registered successfully. OTP sent for verification.");
     }
+
 
     public LoginResponse login(LoginRequest request) {
 

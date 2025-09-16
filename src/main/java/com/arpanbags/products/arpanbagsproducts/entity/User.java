@@ -29,7 +29,7 @@ public class User {
 
     private String companyName;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "user_roles", // Join table
             joinColumns = @JoinColumn(name = "user_id"), // FK to user

@@ -92,6 +92,6 @@ public class ImageController {
 
     // Helper: Base URL
     public static String getBaseUrl(HttpServletRequest request) {
-        return request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
+        return request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()+"/arpanproducts";
     }
 }
