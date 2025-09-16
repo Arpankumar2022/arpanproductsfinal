@@ -12,9 +12,12 @@ import com.arpanbags.products.arpanbagsproducts.mapper.OrderMapper;
 import com.arpanbags.products.arpanbagsproducts.repository.OrderItemRepository;
 import com.arpanbags.products.arpanbagsproducts.repository.OrderRepository;
 import com.arpanbags.products.arpanbagsproducts.repository.ProductsTypeRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -29,11 +32,11 @@ public class OrderService {
 
     private final ProductsTypeRepository productsTypeRepository;
 
-    public OrderDTO createOrder(OrderDTO orderDto) {
+    public OrderDTO createOrder(OrderDTO orderDto, long userId) {
         Orders order = new Orders();
-        order.setOrderDate(orderDto.getOrderDate());
+        order.setOrderDate(LocalDateTime.now());
         order.setOrderStatus(OrderStatus.BOOKED.getDescription());
-        order.setUserId(orderDto.getUserId());
+        order.setUserId(userId);
         order.setOrderNumber("ORDER_ID_" + UUID.randomUUID().toString().substring(0, 8).toUpperCase());
 
         for (OrderItemDTO itemDTO : orderDto.getItemDTOs()) {
@@ -67,11 +70,75 @@ public class OrderService {
     }
 
 
-    public Orders updateOrder(Orders order) {
-        return orderRepository.save(order);
+
+    public OrderDTO updateOrder(OrderDTO orderDto, Long userId) {
+        // Step 1: Fetch existing order
+        Orders existingOrder = orderRepository.findById(orderDto.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Order not found"));
+
+        // Step 2: Validate user ownership
+        if (!existingOrder.getUserId().equals(userId)) {
+            throw new AccessDeniedException("You are not allowed to update this order.");
+        }
+
+        // Step 3: Update fields
+        existingOrder.setOrderStatus(orderDto.getOrderStatus());
+        existingOrder.setOrderDate(orderDto.getOrderDate() != null ? orderDto.getOrderDate() : existingOrder.getOrderDate());
+        existingOrder.setOrderNumber(orderDto.getOrderNumber());
+
+        // Update items - assume you have a utility method for this
+        List<OrderItem> updatedItems = mapItemDTOsToEntities(orderDto.getItemDTOs());
+        existingOrder.setItems(updatedItems);
+
+        // Step 4: Save updated order
+        Orders savedOrder = orderRepository.save(existingOrder);
+
+        // Step 5: Convert to DTO and return
+        return toDTO(savedOrder);
     }
 
     public void deleteOrder(Long id) {
         orderRepository.deleteById(id);
+    }
+
+    public List<OrderItem> mapItemDTOsToEntities(List<OrderItemDTO> itemDTOs) {
+        if (itemDTOs == null) return new ArrayList<>();
+        return itemDTOs.stream()
+                .map(this::toItemEntity)
+                .collect(Collectors.toList());
+    }
+
+    private OrderItemDTO toItemDTO(OrderItem item) {
+        OrderItemDTO dto = new OrderItemDTO();
+        //dto.setId(item.getId());
+        //dto.setProductId(item.getProductId());
+        dto.setQuantity(item.getQuantity());
+       // dto.setPrice(item.getPrice());
+        return dto;
+    }
+
+    private OrderItem toItemEntity(OrderItemDTO dto) {
+        OrderItem item = new OrderItem();
+       // item.setId(dto.get);
+       // item.setProductId(dto.getProductId());
+        item.setQuantity(dto.getQuantity());
+       // item.setPrice(dto.getPrice());
+        return item;
+    }
+
+    public OrderDTO toDTO(Orders order) {
+        OrderDTO dto = new OrderDTO();
+        dto.setId(order.getId());
+        dto.setOrderDate(order.getOrderDate());
+        dto.setOrderNumber(order.getOrderNumber());
+        dto.setOrderStatus(order.getOrderStatus());
+        dto.setUserId(order.getId());
+
+        List<OrderItemDTO> itemDTOs = order.getItems().stream()
+                .map(this::toItemDTO)
+                .collect(Collectors.toList());
+        dto.setItemDTOs(itemDTOs);
+
+        return dto;
     }
 }

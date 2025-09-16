@@ -18,7 +18,7 @@ public class OrderItem {
     private Long id;
     private int quantity;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "product_id")
     private ProductsType product;
 

@@ -5,9 +5,12 @@ import com.arpanbags.products.arpanbagsproducts.dto.OrderDTO;
 import com.arpanbags.products.arpanbagsproducts.entity.Orders;
 import com.arpanbags.products.arpanbagsproducts.enums.OrderStatus;
 import com.arpanbags.products.arpanbagsproducts.service.OrderService;
+import com.arpanbags.products.arpanbagsproducts.service.impl.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,8 +25,13 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<OrderDTO> createOrder(@RequestBody OrderDTO orderDto) {
-        OrderDTO createdOrder = orderService.createOrder(orderDto);
-        return new ResponseEntity<OrderDTO>(createdOrder, HttpStatus.CREATED);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof CustomUserDetails) {
+            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+            return ResponseEntity.ok(orderService.createOrder(orderDto, userDetails.getUserId()));
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @GetMapping("/{id}")
@@ -39,21 +47,19 @@ public class OrderController {
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Orders> updateOrder(@PathVariable Long id, @RequestBody Orders orderDetails) {
-        Optional<Orders> existingOrder = orderService.getOrderById(id);
-        if (existingOrder.isPresent()) {
-            Orders orderToUpdate = existingOrder.get();
-            orderToUpdate.setOrderNumber(orderDetails.getOrderNumber());
-            orderToUpdate.setUserId(10L);
-            // Update other fields as needed
-            orderToUpdate.setOrderStatus(OrderStatus.SHIPPED.getDescription());
-            Orders updatedOrder = orderService.updateOrder(orderToUpdate);
-            return new ResponseEntity<>(updatedOrder, HttpStatus.OK);
+    @PutMapping("/{orderId}")
+    public ResponseEntity<OrderDTO> updateOrder(@PathVariable Long orderId, @RequestBody OrderDTO orderDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof CustomUserDetails) {
+            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+            orderDto.setId(orderId); // Ensure path ID matches DTO
+            OrderDTO updatedOrder = orderService.updateOrder(orderDto, userDetails.getUserId());
+            return ResponseEntity.ok(updatedOrder);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
