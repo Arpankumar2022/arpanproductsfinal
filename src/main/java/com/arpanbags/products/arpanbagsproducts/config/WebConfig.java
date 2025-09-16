@@ -7,11 +7,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    private static final String IMAGE_DIR = "/opt/arpanbags/uploads/images/";
+    private static final String IMAGE_DIR = "file:///opt/arpanbags/uploads/images/";
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/images/files/**")
-                .addResourceLocations("file:" + IMAGE_DIR);
+                .addResourceLocations(IMAGE_DIR);
     }
 }
