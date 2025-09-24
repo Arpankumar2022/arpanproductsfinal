@@ -17,6 +17,8 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.arpanbags.products.arpanbagsproducts.Constants.EMAIL_ALREADY_REGISTERED;
+import static com.arpanbags.products.arpanbagsproducts.Constants.MOBILE_NUMBER_ALREADY_REGISTERED;
 import static java.util.stream.Collectors.toList;
 
 
@@ -34,7 +36,7 @@ public class AuthService {
     @Value("send-otp")
     private String sendOTP;
 
-    public AuthService(UserRepository userRepository, UserOtpRepository userOtpRepository, Msg91OtpService msg91OtpService, PasswordEncoder passwordEncoder, JwtService jwtService,RoleRepository roleRepository) {
+    public AuthService(UserRepository userRepository, UserOtpRepository userOtpRepository, Msg91OtpService msg91OtpService, PasswordEncoder passwordEncoder, JwtService jwtService, RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.userOtpRepository = userOtpRepository;
         this.msg91OtpService = msg91OtpService;
@@ -46,28 +48,26 @@ public class AuthService {
 
     public RegisterResponse register(RegisterRequest request) {
         if (userRepository.findByMobileNumber(request.getMobileNumber()).isPresent()) {
-            return new RegisterResponse(false, "Mobile number already registered");
+            return new RegisterResponse(false, MOBILE_NUMBER_ALREADY_REGISTERED);
+        }
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+            return new RegisterResponse(false, EMAIL_ALREADY_REGISTERED);
         }
 
         User user = new User();
         user.setEmail(request.getEmail());
         user.setMobileNumber(request.getMobileNumber());
         user.setCompanyName(request.getCompanyName());
-        user.setPassword(passwordEncoder.encode(request.getPassword())); // Hashing here
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setAddress(request.getAddress());
-        user.setStatus(User.Status.INACTIVE);
+        user.setStatus(User.Status.ACTIVE);
         user.setCreatedAt(LocalDateTime.now());
-        Set<Role> roles = new HashSet<>();
-        Role newRole = new Role(RoleUsers.ROLE_USER.getRoleName());
-        roles.add(newRole);
-        for (String roleName : roles.stream().map(Role::getName).collect(Collectors.toSet())) {
-            Optional<Role> existingRole = roleRepository.findByName(roleName);
-            if (existingRole.isPresent()) {
-                roles.add(existingRole.get());
-              //  roleRepository.save(newRole);
-                roles.add(newRole);
-            }
+        Optional<Role> userRoleOpt = roleRepository.findByName(RoleUsers.ROLE_USER.getRoleName());
+        if (userRoleOpt.isEmpty()) {
+            throw new IllegalStateException("Default user role not found in the database.");
         }
+        Set<Role> roles = new HashSet<>();
+        roles.add(userRoleOpt.get());
         user.setRoles(roles);
         userRepository.save(user);
 

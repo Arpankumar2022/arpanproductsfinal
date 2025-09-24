@@ -21,12 +21,16 @@ public class CartItemController {
     private final CartItemService cartItemService;
 
     @PostMapping("/add")
-    public ResponseEntity<CartItemDTO> addCartItem(@RequestBody CartItemDTO dto) {
+    public ResponseEntity<?> addCartItem(@RequestBody CartItemDTO dto) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.getPrincipal() instanceof CustomUserDetails) {
             CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-            return ResponseEntity.ok(cartItemService.createCartItem(dto, userDetails.getUserId()));
+            if (cartItemService.getExistingCartItems(userDetails.getUserId(), dto.getProduct().getId())) {
+                return ResponseEntity.badRequest().body("Cart item already exists for this user and product.");
+            }
+            CartItemDTO cartItemDTO = cartItemService.createCartItem(dto, userDetails.getUserId());
+            return ResponseEntity.ok(cartItemDTO);
         } else {
             return ResponseEntity.badRequest().build();
         }

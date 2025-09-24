@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,6 +22,7 @@ public class CartItemService {
     private final ProductTypeService productTypeService; // To get ProductsTypeDTO by productID
 
     public CartItemDTO createCartItem(CartItemDTO cartItemDTO, Long userId) {
+
         CartItem cartItem = new CartItem();
         cartItem.setUserID(userId);
         cartItem.setProductID(cartItemDTO.getProduct().getId()); // assuming ProductsTypeDTO has getId()
@@ -66,5 +68,10 @@ public class CartItemService {
 
     public void deleteItem(Long id) {
         cartItemRepository.deleteById(id);
+    }
+
+    public boolean getExistingCartItems(Long userId, Long productId) {
+        List<CartItem> existingCart = cartItemRepository.findByUserIdAndProductId(userId, productId);
+        return !existingCart.isEmpty();
     }
 }

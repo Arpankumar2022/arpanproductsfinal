@@ -10,6 +10,7 @@ public class Constants {
 
     //Validations Message
     public static final String MOBILE_NUMBER_ALREADY_REGISTERED = "Mobile number already registered";
+    public static final String EMAIL_ALREADY_REGISTERED = "Email Id already registered";
 
     public static final String EMAIL_REQUIRED = "Email is required";
     public static final String INVALID_EMAIL = "Invalid email format";

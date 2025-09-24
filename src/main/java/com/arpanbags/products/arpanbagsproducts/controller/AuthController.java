@@ -57,6 +57,8 @@ public class AuthController {
             return ResponseEntity.ok(response);
         } else if (response.getMessage().equals(MOBILE_NUMBER_ALREADY_REGISTERED)) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+        } else if (response.getMessage().equals(EMAIL_ALREADY_REGISTERED)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
         } else {
             return ResponseEntity.badRequest().body(response);
         }
@@ -71,10 +73,10 @@ public class AuthController {
             LoginResponse loginValidationErrors = new LoginResponse(null, null, Collections.emptyList(), "Validation error(s): " + errorMessage);
             return ResponseEntity.badRequest().body(loginValidationErrors);
         }
-        LoginResponse loginResponse  = authService.login(request);
-        if(loginResponse.getError()!=null) {
+        LoginResponse loginResponse = authService.login(request);
+        if (loginResponse.getError() != null) {
             return ResponseEntity.badRequest().body(loginResponse);
-        }else{
+        } else {
             return ResponseEntity.ok().body(loginResponse);
         }
     }
